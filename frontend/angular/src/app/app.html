@@ -1,0 +1,63 @@
+<div class="app-container">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <!-- Placeholder for a logo -->
+      <div class="logo">M</div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item active"><span>Portfolio</span></li>
+      <li class="nav-item"><span>Märkte</span></li>
+      <li class="nav-item"><span>News</span></li>
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <header class="header">
+      <h1>{{ title }}</h1>
+      <div class="search-bar">
+        <input type="text" placeholder="Suchen...">
+      </div>
+    </header>
+
+    <main class="content">
+      <h2>Watchlist</h2>
+      <div class="market-grid">
+        <!-- Skeleton Loader -->
+        <ng-container *ngIf="!(prices$ | async)?.length">
+          <div class="stock-card skeleton" *ngFor="let i of [1,2,3,4,5,6]"></div>
+        </ng-container>
+
+        <!-- Actual Data -->
+        <div *ngFor="let item of prices$ | async" class="stock-card" (click)="showChart(item)">
+          <div class="card-header">
+            <span class="symbol">{{ item.symbol }}</span>
+            <div class="item-change" [ngClass]="item.change >= 0 ? 'positive' : 'negative'">
+              <span>{{ item.changePercent | number:'1.2-2' }}%</span>
+            </div>
+          </div>
+          <div class="price">{{ item.price | currency:'EUR':'symbol' }}</div>
+          <div class="chart-placeholder" [ngClass]="item.change >= 0 ? 'positive-chart' : 'negative-chart'"></div>
+        </div>
+      </div>
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+
+<!-- Chart Modal -->
+<div *ngIf="selectedStock" class="modal-overlay" (click)="closeChart()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ selectedStock.symbol }}</h2>
+      <button class="close-button" (click)="closeChart()">×</button>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngIf="chartData.length > 0; else chartLoading">
+        <app-stock-chart [chartData]="chartData" [colorScheme]="chartColorScheme"></app-stock-chart>
+      </ng-container>
+      <ng-template #chartLoading>
+        <p>Lade Chart-Daten...</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

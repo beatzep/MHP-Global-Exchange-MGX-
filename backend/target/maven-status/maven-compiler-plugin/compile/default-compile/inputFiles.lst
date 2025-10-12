@@ -1,0 +1,13 @@
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/MhpExchangeApplication.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/config/WebConfig.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/AlphaVantageQuoteResponse.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/AlphaVantageTimeSeriesResponse.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/CandleData.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/CompanyProfile.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/FinnhubQuote.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/GlobalQuote.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/MarketController.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/MarketData.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/TwelveDataTimeSeriesResponse.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/TwelveDataValue.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/domain/MarketData.java
