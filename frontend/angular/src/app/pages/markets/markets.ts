@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Observable, Subscription, timer } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { MarketService, ChartData } from '../home/market.service';
 import { WatchlistService } from '../../services/watchlist.service';
+import { TradingService } from '../../services/trading.service';
 import { StockChartComponent } from '../home/stock-chart.component';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 
@@ -18,7 +20,7 @@ interface MarketData {
 @Component({
   standalone: true,
   selector: 'app-markets',
-  imports: [CommonModule, StockChartComponent],
+  imports: [CommonModule, FormsModule, StockChartComponent],
   templateUrl: './markets.html',
   styleUrls: ['./markets.css']
 })
@@ -32,6 +34,13 @@ export class MarketsComponent implements OnInit, OnDestroy {
   private apiUrl = 'http://localhost:8080/api/market';
   private marketService = inject(MarketService);
   private watchlistService = inject(WatchlistService);
+  private tradingService = inject(TradingService);
+
+  // Buy modal state
+  showBuyModal: boolean = false;
+  selectedAssetForBuy: MarketData | null = null;
+  buyQuantity: number = 1;
+  balance$ = this.tradingService.balance$;
 
   constructor(private http: HttpClient) {}
 
@@ -193,5 +202,60 @@ export class MarketsComponent implements OnInit, OnDestroy {
 
   isInWatchlist(symbol: string): boolean {
     return this.watchlistService.isInWatchlist(symbol);
+  }
+
+  openBuyModal(asset: MarketData, event: Event): void {
+    event.stopPropagation();
+    this.selectedAssetForBuy = asset;
+    this.buyQuantity = 1;
+    this.showBuyModal = true;
+  }
+
+  closeBuyModal(): void {
+    this.showBuyModal = false;
+    this.selectedAssetForBuy = null;
+    this.buyQuantity = 1;
+  }
+
+  calculateFees(): number {
+    if (!this.selectedAssetForBuy) return 0;
+    return this.tradingService.calculateFees(
+      this.selectedCategory,
+      this.selectedAssetForBuy.price,
+      this.buyQuantity
+    );
+  }
+
+  calculateTotalCost(): number {
+    if (!this.selectedAssetForBuy) return 0;
+    return this.tradingService.calculateTotalCost(
+      this.selectedCategory,
+      this.selectedAssetForBuy.price,
+      this.buyQuantity
+    );
+  }
+
+  confirmPurchase(): void {
+    if (!this.selectedAssetForBuy) return;
+
+    const buyRequest = {
+      symbol: this.selectedAssetForBuy.symbol,
+      category: this.selectedCategory,
+      quantity: this.buyQuantity,
+      price: this.selectedAssetForBuy.price
+    };
+
+    this.tradingService.buyAsset(buyRequest).subscribe({
+      next: (response) => {
+        console.log('Purchase successful:', response);
+        alert(`Erfolgreich gekauft: ${response.quantity}x ${response.symbol}\nGesamtkosten: ${response.totalCost.toFixed(2)}€\nVerbleibend: ${response.remainingBalance.toFixed(2)}€`);
+        this.closeBuyModal();
+      },
+      error: (error) => {
+        console.error('Purchase failed:', error);
+        const errorMsg = error.error?.error || 'Kauf fehlgeschlagen';
+        alert(`Fehler: ${errorMsg}`);
+      }
+    });
   }
 }

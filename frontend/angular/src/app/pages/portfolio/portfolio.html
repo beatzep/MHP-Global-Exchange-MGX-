@@ -1,0 +1,125 @@
+<div class="portfolio-container">
+  <div class="portfolio-header">
+    <h2>Mein Portfolio</h2>
+    <p class="subtitle">Übersicht über Ihre Investments</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Portfolio wird geladen...</p>
+  </div>
+
+  <!-- Empty Portfolio -->
+  <div *ngIf="!loading && portfolioData.length === 0" class="empty-portfolio">
+    <div class="empty-icon">📊</div>
+    <h3>Ihr Portfolio ist leer</h3>
+    <p>Kaufen Sie Ihre ersten Wertpapiere auf der Märkte-Seite.</p>
+    <div class="empty-balance">
+      <span>Verfügbares Kapital:</span>
+      <span class="balance-amount">{{ balance | currency:'EUR':'symbol':'1.2-2' }}</span>
+    </div>
+    <a routerLink="/markets" class="add-btn">Zu den Märkten</a>
+  </div>
+
+  <!-- Portfolio Content -->
+  <div *ngIf="!loading && portfolioData.length > 0" class="portfolio-content">
+    <!-- Total Value Card -->
+    <div class="total-value-card">
+      <div class="card-header">
+        <span class="card-icon">💰</span>
+        <h3>Portfolio-Übersicht</h3>
+      </div>
+      <div class="portfolio-stats">
+        <div class="stat-item">
+          <span class="stat-label">Aktueller Wert</span>
+          <div class="stat-value">{{ totalValue | currency:'EUR':'symbol':'1.2-2' }}</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Investiert</span>
+          <div class="stat-value secondary">{{ totalCost | currency:'EUR':'symbol':'1.2-2' }}</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Gewinn/Verlust</span>
+          <div class="stat-value" [ngClass]="totalProfitLoss >= 0 ? 'positive' : 'negative'">
+            {{ totalProfitLoss >= 0 ? '+' : '' }}{{ totalProfitLoss | currency:'EUR':'symbol':'1.2-2' }}
+            <span class="percent">({{ totalProfitLossPercent | number:'1.2-2' }}%)</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Verfügbar</span>
+          <div class="stat-value">{{ balance | currency:'EUR':'symbol':'1.2-2' }}</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="positions-count">{{ portfolioData.length }} Position(en)</span>
+      </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <div class="chart-section">
+      <h3>Portfolio-Verteilung</h3>
+      <div class="pie-chart-container">
+        <ngx-charts-pie-chart
+          [results]="pieChartData"
+          [scheme]="colorScheme"
+          [legend]="true"
+          [labels]="true"
+          [doughnut]="false"
+          [explodeSlices]="false"
+          [gradient]="true"
+          (select)="onSelect($event)">
+        </ngx-charts-pie-chart>
+      </div>
+    </div>
+
+    <!-- Portfolio Details Table -->
+    <div class="portfolio-table">
+      <h3>Positionen im Detail</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Anzahl</th>
+            <th>Einkauf</th>
+            <th>Aktuell</th>
+            <th>Wert</th>
+            <th>Gewinn/Verlust</th>
+            <th>Anteil</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of portfolioData">
+            <td class="symbol-cell">
+              <span class="symbol">{{ item.name }}</span>
+            </td>
+            <td class="quantity-cell">
+              {{ item.quantity }}
+            </td>
+            <td class="price-cell">
+              {{ item.purchasePrice | currency:'USD':'symbol':'1.2-2' }}
+            </td>
+            <td class="price-cell">
+              {{ item.currentPrice | currency:'USD':'symbol':'1.2-2' }}
+            </td>
+            <td class="value-cell">
+              {{ item.currentValue | currency:'EUR':'symbol':'1.2-2' }}
+            </td>
+            <td class="profit-cell" [ngClass]="item.profitLoss >= 0 ? 'positive' : 'negative'">
+              <div class="profit-display">
+                <span class="profit-amount">{{ item.profitLoss >= 0 ? '+' : '' }}{{ item.profitLoss | currency:'EUR':'symbol':'1.2-2' }}</span>
+                <span class="profit-percent">({{ item.profitLossPercent | number:'1.2-2' }}%)</span>
+              </div>
+            </td>
+            <td class="percentage-cell">
+              <div class="percentage-bar-container">
+                <div class="percentage-bar" [style.width.%]="item.percentage"></div>
+              </div>
+              <span class="percentage-text">{{ item.percentage | number:'1.1-1' }}%</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home';
+import { Portfolio } from './pages/portfolio/portfolio';
 import { MarketsComponent } from './pages/markets/markets';
 import { NewsComponent } from './pages/news/news';
 import { UeberunsComponent } from './pages/ueberuns/ueberuns';
@@ -10,7 +11,8 @@ import { RegisterComponent } from './pages/register/register';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [authGuard] },
+  { path: '', component: Portfolio, canActivate: [authGuard] },
+  { path: 'watchlist', component: HomeComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'markets', component: MarketsComponent },

@@ -28,12 +28,18 @@ public class User {
     @Column(name = "watchlist", columnDefinition = "TEXT")
     private String watchlist; // Comma-separated list of stock symbols
 
+    @Column(name = "balance", nullable = false)
+    private Double balance; // User's available cash balance in EUR
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
         if (watchlist == null) {
             watchlist = ""; // Empty watchlist by default
+        }
+        if (balance == null) {
+            balance = 10000.0; // Starting capital: 10,000 EUR
         }
     }
 
@@ -70,4 +76,7 @@ public class User {
 
     public String getWatchlist() { return watchlist; }
     public void setWatchlist(String watchlist) { this.watchlist = watchlist; }
+
+    public Double getBalance() { return balance; }
+    public void setBalance(Double balance) { this.balance = balance; }
 }

@@ -5,6 +5,10 @@
       <p class="subtitle">Live-Kursdaten aus verschiedenen Anlageklassen</p>
     </div>
     <div class="market-stats">
+      <div class="stat-badge balance-badge">
+        <span class="stat-label">Verfügbar:</span>
+        <span class="balance-amount">{{ (balance$ | async) | currency:'EUR':'symbol':'1.2-2' }}</span>
+      </div>
       <div class="stat-badge">
         <span class="stat-label">Live</span>
         <span class="live-indicator"></span>
@@ -81,9 +85,9 @@
             (click)="toggleWatchlist(data.symbol, $event)"
             [title]="isInWatchlist(data.symbol) ? 'Aus Watchlist entfernen' : 'Zur Watchlist hinzufügen'">
             <span class="watchlist-icon">{{ isInWatchlist(data.symbol) ? '★' : '☆' }}</span>
-            <span class="watchlist-text">{{ isInWatchlist(data.symbol) ? 'In Watchlist' : 'Zur Watchlist' }}</span>
           </button>
-          <button class="view-details-btn" (click)="showChart(data)">Details anzeigen</button>
+          <button class="buy-btn" (click)="openBuyModal(data, $event)">Kaufen</button>
+          <button class="view-details-btn" (click)="showChart(data)">Details</button>
         </div>
       </div>
     </div>
@@ -115,6 +119,67 @@
             <p>Lade Chart-Daten...</p>
           </div>
         </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buy Modal -->
+  <div *ngIf="showBuyModal" class="modal-overlay" (click)="closeBuyModal()">
+    <div class="buy-modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h2>{{ selectedAssetForBuy?.symbol }} kaufen</h2>
+          <span class="modal-subtitle">{{ getCompanyName(selectedAssetForBuy?.symbol || '') }}</span>
+        </div>
+        <button class="close-button" (click)="closeBuyModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="buy-form">
+          <div class="form-row">
+            <label>Aktueller Preis</label>
+            <div class="price-display">{{ selectedAssetForBuy?.price | currency:'USD':'symbol':'1.2-2' }}</div>
+          </div>
+
+          <div class="form-row">
+            <label for="quantity">Anzahl</label>
+            <input
+              type="number"
+              id="quantity"
+              [(ngModel)]="buyQuantity"
+              min="1"
+              step="1"
+              class="quantity-input">
+          </div>
+
+          <div class="cost-breakdown">
+            <div class="cost-row">
+              <span>Wertpapiere</span>
+              <span>{{ (selectedAssetForBuy?.price || 0) * buyQuantity | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="cost-row">
+              <span>Gebühren</span>
+              <span>{{ calculateFees() | currency:'EUR':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="cost-row total">
+              <span>Gesamtkosten</span>
+              <span>{{ calculateTotalCost() | currency:'EUR':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="cost-row balance-info">
+              <span>Verfügbar</span>
+              <span>{{ (balance$ | async) | currency:'EUR':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="cancel-btn" (click)="closeBuyModal()">Abbrechen</button>
+            <button
+              class="confirm-buy-btn"
+              (click)="confirmPurchase()"
+              [disabled]="calculateTotalCost() > ((balance$ | async) || 0)">
+              Jetzt kaufen
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -49,6 +49,21 @@
   color: var(--text-secondary);
 }
 
+.balance-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+}
+
+.balance-badge .stat-label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.balance-amount {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
 .live-indicator {
   width: 8px;
   height: 8px;
@@ -252,20 +267,18 @@
 }
 
 .watchlist-toggle-btn {
-  flex: 1;
   padding: 0.75rem;
   background-color: rgba(255, 204, 0, 0.1);
   color: #ffcc00;
   border: 1px solid rgba(255, 204, 0, 0.2);
   border-radius: 10px;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
 }
 
 .watchlist-toggle-btn:hover {
@@ -285,8 +298,22 @@
   line-height: 1;
 }
 
-.watchlist-text {
-  font-size: 0.85rem;
+.buy-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #34c759 0%, #28a745 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.buy-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
 }
 
 .view-details-btn {
@@ -482,6 +509,157 @@
   color: var(--text-secondary);
   font-size: 0.95rem;
   margin: 0;
+}
+
+/* Buy Modal */
+.buy-modal-content {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.buy-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-row label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.price-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.quantity-input {
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 1rem;
+  color: var(--text-color);
+  transition: all 0.2s;
+}
+
+.quantity-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.cost-breakdown {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.cost-row span:first-child {
+  color: var(--text-secondary);
+}
+
+.cost-row span:last-child {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.cost-row.total {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.cost-row.total span {
+  color: var(--text-color);
+}
+
+.cost-row.balance-info {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: -1rem -1rem -1rem -1rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 12px 12px;
+}
+
+.cost-row.balance-info span {
+  color: white;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.cancel-btn {
+  flex: 1;
+  padding: 0.875rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.confirm-buy-btn {
+  flex: 2;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, #34c759 0%, #28a745 100%);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirm-buy-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(52, 199, 89, 0.4);
+}
+
+.confirm-buy-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #888 0%, #666 100%);
 }
 
 /* Responsive */

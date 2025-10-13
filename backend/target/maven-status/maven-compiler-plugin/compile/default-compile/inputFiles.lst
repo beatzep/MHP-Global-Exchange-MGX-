@@ -8,6 +8,10 @@
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/TwelveDataTimeSeriesResponse.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/TwelveDataValue.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/domain/MarketData.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/portfolio/domain/Position.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/portfolio/domain/PositionRepository.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/trading/api/BuyRequest.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/trading/api/TradingController.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/AuthController.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/ChangePasswordRequest.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/LoginRequest.java
