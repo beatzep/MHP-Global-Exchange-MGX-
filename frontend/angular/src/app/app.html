@@ -25,7 +25,20 @@
     </ul>
 
     <div class="sidebar-footer">
-      <a routerLink="/login" class="login-link">
+      <!-- Show user info when logged in -->
+      <div class="user-info" *ngIf="currentUser$ | async as user">
+        <div class="user-avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+        <div class="user-details">
+          <div class="user-name">{{ user.name }}</div>
+          <div class="user-email">{{ user.email }}</div>
+        </div>
+        <button class="logout-btn" (click)="logout()" title="Abmelden">
+          <span>⎋</span>
+        </button>
+      </div>
+
+      <!-- Show login button when not logged in -->
+      <a routerLink="/login" class="login-link" *ngIf="!(currentUser$ | async)">
         <span class="login-icon">🔐</span>
         <span>Anmelden</span>
       </a>

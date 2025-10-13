@@ -23,23 +23,21 @@ interface User {
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
-  private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) {
+    // Clear any existing session on app initialization
+    this.clearSession();
+  }
 
-  private getUserFromStorage(): User | null {
-    const token = localStorage.getItem('authToken');
-    const email = localStorage.getItem('userEmail');
-    const name = localStorage.getItem('userName');
-
-    if (token && email && name) {
-      return { token, email, name };
-    }
-    return null;
+  private clearSession(): void {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
