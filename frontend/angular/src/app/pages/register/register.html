@@ -1,0 +1,77 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Account erstellen</h2>
+      <p class="subtitle">Registrieren Sie sich für ein neues Konto</p>
+    </div>
+
+    <form class="login-form" (ngSubmit)="register()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Max Mustermann"
+          required
+          autocomplete="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-Mail-Adresse</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="ihre.email@example.com"
+          required
+          autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          required
+          autocomplete="new-password" />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Passwort bestätigen</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          placeholder="••••••••"
+          required
+          autocomplete="new-password" />
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        <span class="error-icon">⚠️</span>
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="login-btn" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Registrieren</span>
+        <span *ngIf="isLoading">Wird erstellt...</span>
+      </button>
+    </form>
+
+    <div class="demo-info">
+      <div class="info-badge login-link-info">
+        <span class="info-icon">ℹ️</span>
+        <div class="info-text">
+          <p>Sie haben bereits ein Konto? <a routerLink="/login" class="link">Hier anmelden</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

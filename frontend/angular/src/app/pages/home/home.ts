@@ -1,37 +1,97 @@
 import { Component, inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, Subscription, timer, scan } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { RouterModule } from '@angular/router';
+import { Observable, Subscription, timer, scan, combineLatest } from 'rxjs';
+import { switchMap, map, filter } from 'rxjs/operators';
 import { MarketData } from './market-data.model';
 import { MarketService, ChartData } from './market.service';
+import { WatchlistService } from '../../services/watchlist.service';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { StockChartComponent } from './stock-chart.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, StockChartComponent],
+  imports: [CommonModule, RouterModule, StockChartComponent],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  prices$!: Observable<MarketData[]>;
+  stockPrices$!: Observable<MarketData[]>;
+  etfPrices$!: Observable<MarketData[]>;
+  bondPrices$!: Observable<MarketData[]>;
   selectedStock: MarketData | null = null;
   chartData: any[] = [];
   chartColorScheme: Color = { domain: ['#26a69a'], group: ScaleType.Linear, selectable: true, name: 'Stock' };
   private refreshSubscription!: Subscription;
+  stockSymbols: string[] = [];
+  etfSymbols: string[] = [];
+  bondSymbols: string[] = [];
 
   private marketService = inject(MarketService);
+  private watchlistService = inject(WatchlistService);
 
   ngOnInit(): void {
+    // Load watchlist first
+    this.watchlistService.loadWatchlist().subscribe();
+
+    // Subscribe to watchlist changes
+    this.watchlistService.watchlist$.subscribe(watchlist => {
+      this.stockSymbols = watchlist.stocks;
+      this.etfSymbols = watchlist.etfs;
+      this.bondSymbols = watchlist.bonds;
+    });
+
     const REFRESH_INTERVAL = 60000; // 60 Sekunden
-    this.prices$ = timer(0, REFRESH_INTERVAL).pipe(
+
+    // Create separate price streams for each category
+    const allStockPrices$ = timer(0, REFRESH_INTERVAL).pipe(
       switchMap(() =>
-        this.marketService.getPricesStream().pipe(
+        this.marketService.getPricesStreamByCategory('stocks').pipe(
           scan((acc, value) => [...acc, value], [] as MarketData[])
         )
       )
+    );
+
+    const allEtfPrices$ = timer(0, REFRESH_INTERVAL).pipe(
+      switchMap(() =>
+        this.marketService.getPricesStreamByCategory('etfs').pipe(
+          scan((acc, value) => [...acc, value], [] as MarketData[])
+        )
+      )
+    );
+
+    const allBondPrices$ = timer(0, REFRESH_INTERVAL).pipe(
+      switchMap(() =>
+        this.marketService.getPricesStreamByCategory('bonds').pipe(
+          scan((acc, value) => [...acc, value], [] as MarketData[])
+        )
+      )
+    );
+
+    // Filter for stocks
+    this.stockPrices$ = combineLatest([allStockPrices$, this.watchlistService.watchlist$]).pipe(
+      map(([prices, watchlist]) => {
+        if (watchlist.stocks.length === 0) return [];
+        return prices.filter(price => watchlist.stocks.includes(price.symbol));
+      })
+    );
+
+    // Filter for ETFs
+    this.etfPrices$ = combineLatest([allEtfPrices$, this.watchlistService.watchlist$]).pipe(
+      map(([prices, watchlist]) => {
+        if (watchlist.etfs.length === 0) return [];
+        return prices.filter(price => watchlist.etfs.includes(price.symbol));
+      })
+    );
+
+    // Filter for Bonds
+    this.bondPrices$ = combineLatest([allBondPrices$, this.watchlistService.watchlist$]).pipe(
+      map(([prices, watchlist]) => {
+        if (watchlist.bonds.length === 0) return [];
+        return prices.filter(price => watchlist.bonds.includes(price.symbol));
+      })
     );
   }
 
@@ -59,5 +119,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   closeChart(): void {
     this.selectedStock = null;
+  }
+
+  removeFromWatchlist(symbol: string, event: Event): void {
+    event.stopPropagation(); // Prevent triggering showChart
+    this.watchlistService.removeFromWatchlist(symbol).subscribe({
+      next: (response) => {
+        console.log('Removed from watchlist:', response);
+      },
+      error: (error) => {
+        console.error('Error removing from watchlist:', error);
+      }
+    });
+  }
+
+  isInWatchlist(symbol: string): boolean {
+    return this.watchlistService.isInWatchlist(symbol);
   }
 }

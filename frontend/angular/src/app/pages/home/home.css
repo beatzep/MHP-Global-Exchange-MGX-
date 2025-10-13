@@ -1,11 +1,163 @@
 /* Home page verwendet die globalen Styles aus app.css */
 
 /* Home-spezifische Überschreibungen */
+.watchlist-header {
+  margin-bottom: 2rem;
+}
+
 h2 {
   margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: -0.7px;
   color: var(--text-color);
+}
+
+.watchlist-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Category Sections */
+.category-section {
+  margin-bottom: 3rem;
+}
+
+.category-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.category-section-header .category-icon {
+  font-size: 1.75rem;
+}
+
+.category-section-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  flex: 1;
+}
+
+.category-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 0.75rem;
+  background: rgba(0, 122, 255, 0.1);
+  border: 1px solid rgba(0, 122, 255, 0.2);
+  border-radius: 16px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+/* Empty Watchlist State */
+.empty-watchlist-container {
+  margin: 2rem 0;
+}
+
+.empty-watchlist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--card-bg);
+  border: 2px dashed var(--border-color);
+  border-radius: 16px;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.empty-watchlist h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.empty-watchlist p {
+  margin: 0 0 2rem 0;
+  max-width: 500px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.add-stocks-btn {
+  padding: 0.875rem 2rem;
+  background: var(--accent-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.add-stocks-btn:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+}
+
+/* Stock Card with Remove Button */
+.stock-card {
+  position: relative;
+  cursor: pointer;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 59, 48, 0.1);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  opacity: 0;
+}
+
+.stock-card:hover .remove-btn {
+  opacity: 1;
+}
+
+.remove-btn:hover {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: rgba(255, 59, 48, 0.4);
+  transform: scale(1.1);
+}
+
+.remove-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #ff3b30;
+  font-weight: 300;
+}
+
+.stock-card-content {
+  width: 100%;
+  height: 100%;
 }

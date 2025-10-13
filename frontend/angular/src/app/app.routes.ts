@@ -6,11 +6,13 @@ import { UeberunsComponent } from './pages/ueberuns/ueberuns';
 import { HilfeComponent } from './pages/hilfe/hilfe';
 import { EinstellungenComponent } from './pages/einstellungen/einstellungen';
 import { LoginComponent } from './pages/login/login';
+import { RegisterComponent } from './pages/register/register';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'markets', component: MarketsComponent },
   { path: 'news', component: NewsComponent },
   { path: 'ueberuns', component: UeberunsComponent },

@@ -79,4 +79,60 @@ export class AuthService {
   getAuthToken(): string | null {
     return localStorage.getItem('authToken');
   }
+
+  register(name: string, email: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/register`, {
+      name,
+      email,
+      password
+    }).pipe(
+      tap(response => {
+        if (response.success && response.token) {
+          localStorage.setItem('authToken', response.token);
+          localStorage.setItem('userEmail', response.email || '');
+          localStorage.setItem('userName', response.name || '');
+          this.currentUserSubject.next({
+            token: response.token,
+            email: response.email || '',
+            name: response.name || ''
+          });
+        }
+      })
+    );
+  }
+
+  changePassword(currentPassword: string, newPassword: string): Observable<any> {
+    const token = this.getAuthToken();
+    return this.http.post(`${this.apiUrl}/change-password`, {
+      currentPassword,
+      newPassword
+    }, {
+      headers: { 'Authorization': token || '' }
+    });
+  }
+
+  updateProfile(name: string, email: string): Observable<any> {
+    const token = this.getAuthToken();
+    return this.http.post(`${this.apiUrl}/update-profile`, {
+      name,
+      email
+    }, {
+      headers: { 'Authorization': token || '' }
+    }).pipe(
+      tap((response: any) => {
+        if (response.success && response.user) {
+          localStorage.setItem('userEmail', response.user.email);
+          localStorage.setItem('userName', response.user.name);
+          const currentToken = this.getAuthToken();
+          if (currentToken) {
+            this.currentUserSubject.next({
+              token: currentToken,
+              email: response.user.email,
+              name: response.user.name
+            });
+          }
+        }
+      })
+    );
+  }
 }

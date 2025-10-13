@@ -2,7 +2,7 @@
   <div class="markets-header">
     <div class="header-content">
       <h2>Märkte</h2>
-      <p class="subtitle">Live-Kursdaten der wichtigsten Aktien</p>
+      <p class="subtitle">Live-Kursdaten aus verschiedenen Anlageklassen</p>
     </div>
     <div class="market-stats">
       <div class="stat-badge">
@@ -13,6 +13,34 @@
         <span class="stat-label">Aktualisiert alle 60s</span>
       </div>
     </div>
+  </div>
+
+  <!-- Category Navigation Bar -->
+  <div class="category-bar">
+    <button
+      class="category-btn"
+      [class.active]="selectedCategory === 'stocks'"
+      (click)="selectCategory('stocks')">
+      <span class="category-icon">📈</span>
+      <span class="category-label">Aktien</span>
+      <span class="category-count">10</span>
+    </button>
+    <button
+      class="category-btn"
+      [class.active]="selectedCategory === 'etfs'"
+      (click)="selectCategory('etfs')">
+      <span class="category-icon">📊</span>
+      <span class="category-label">ETFs</span>
+      <span class="category-count">8</span>
+    </button>
+    <button
+      class="category-btn"
+      [class.active]="selectedCategory === 'bonds'"
+      (click)="selectCategory('bonds')">
+      <span class="category-icon">💼</span>
+      <span class="category-label">Anleihen</span>
+      <span class="category-count">8</span>
+    </button>
   </div>
 
   <!-- Loading State -->
@@ -47,7 +75,15 @@
         </div>
 
         <div class="card-footer">
-          <button class="view-details-btn">Details anzeigen</button>
+          <button
+            class="watchlist-toggle-btn"
+            [class.in-watchlist]="isInWatchlist(data.symbol)"
+            (click)="toggleWatchlist(data.symbol, $event)"
+            [title]="isInWatchlist(data.symbol) ? 'Aus Watchlist entfernen' : 'Zur Watchlist hinzufügen'">
+            <span class="watchlist-icon">{{ isInWatchlist(data.symbol) ? '★' : '☆' }}</span>
+            <span class="watchlist-text">{{ isInWatchlist(data.symbol) ? 'In Watchlist' : 'Zur Watchlist' }}</span>
+          </button>
+          <button class="view-details-btn" (click)="showChart(data)">Details anzeigen</button>
         </div>
       </div>
     </div>
@@ -57,5 +93,29 @@
   <div class="info-banner">
     <span class="info-icon">ℹ️</span>
     <p>Die Kursdaten werden von Finnhub bereitgestellt und alle 60 Sekunden aktualisiert. Für Echtzeit-Trading bitte einloggen.</p>
+  </div>
+
+  <!-- Chart Modal -->
+  <div *ngIf="selectedStock" class="modal-overlay" (click)="closeChart()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h2>{{ selectedStock.symbol }}</h2>
+          <span class="modal-subtitle">{{ getCompanyName(selectedStock.symbol) }}</span>
+        </div>
+        <button class="close-button" (click)="closeChart()">×</button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="chartData.length > 0; else chartLoading">
+          <app-stock-chart-home [chartData]="chartData" [colorScheme]="chartColorScheme"></app-stock-chart-home>
+        </ng-container>
+        <ng-template #chartLoading>
+          <div class="chart-loading">
+            <div class="loading-spinner"></div>
+            <p>Lade Chart-Daten...</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </div>

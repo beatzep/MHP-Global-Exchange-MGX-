@@ -1,20 +1,93 @@
-<h2>Watchlist</h2>
-<div class="market-grid">
-  <!-- Skeleton Loader -->
-  <ng-container *ngIf="!(prices$ | async)?.length">
-    <div class="stock-card skeleton" *ngFor="let i of [1,2,3,4,5,6]"></div>
-  </ng-container>
+<div class="watchlist-header">
+  <h2>Meine Watchlist</h2>
+  <p class="watchlist-subtitle">Verwalten Sie Ihre bevorzugten Wertpapiere nach Kategorien</p>
+</div>
 
-  <!-- Actual Data -->
-  <div *ngFor="let item of prices$ | async" class="stock-card" (click)="showChart(item)">
-    <div class="card-header">
-      <span class="symbol">{{ item.symbol }}</span>
-      <div class="item-change" [ngClass]="item.change >= 0 ? 'positive' : 'negative'">
-        <span>{{ item.changePercent | number:'1.2-2' }}%</span>
+<!-- Empty Watchlist Message -->
+<div *ngIf="stockSymbols.length === 0 && etfSymbols.length === 0 && bondSymbols.length === 0" class="empty-watchlist-container">
+  <div class="empty-watchlist">
+    <div class="empty-icon">📊</div>
+    <h3>Ihre Watchlist ist leer</h3>
+    <p>Fügen Sie Aktien, ETFs oder Anleihen zur Watchlist hinzu, indem Sie auf der Märkte-Seite nach interessanten Titeln suchen.</p>
+    <a routerLink="/markets" class="add-stocks-btn">Zu den Märkten</a>
+  </div>
+</div>
+
+<!-- Stocks Section -->
+<div *ngIf="stockSymbols.length > 0" class="category-section">
+  <div class="category-section-header">
+    <span class="category-icon">📈</span>
+    <h3>Aktien</h3>
+    <span class="category-badge">{{ stockSymbols.length }}</span>
+  </div>
+  <div class="market-grid">
+    <div *ngFor="let item of stockPrices$ | async" class="stock-card">
+      <button class="remove-btn" (click)="removeFromWatchlist(item.symbol, $event)" title="Aus Watchlist entfernen">
+        <span class="remove-icon">×</span>
+      </button>
+      <div (click)="showChart(item)" class="stock-card-content">
+        <div class="card-header">
+          <span class="symbol">{{ item.symbol }}</span>
+          <div class="item-change" [ngClass]="item.change >= 0 ? 'positive' : 'negative'">
+            <span>{{ item.changePercent | number:'1.2-2' }}%</span>
+          </div>
+        </div>
+        <div class="price">{{ item.price | currency:'EUR':'symbol' }}</div>
+        <div class="chart-placeholder" [ngClass]="item.change >= 0 ? 'positive-chart' : 'negative-chart'"></div>
       </div>
     </div>
-    <div class="price">{{ item.price | currency:'EUR':'symbol' }}</div>
-    <div class="chart-placeholder" [ngClass]="item.change >= 0 ? 'positive-chart' : 'negative-chart'"></div>
+  </div>
+</div>
+
+<!-- ETFs Section -->
+<div *ngIf="etfSymbols.length > 0" class="category-section">
+  <div class="category-section-header">
+    <span class="category-icon">📊</span>
+    <h3>ETFs</h3>
+    <span class="category-badge">{{ etfSymbols.length }}</span>
+  </div>
+  <div class="market-grid">
+    <div *ngFor="let item of etfPrices$ | async" class="stock-card">
+      <button class="remove-btn" (click)="removeFromWatchlist(item.symbol, $event)" title="Aus Watchlist entfernen">
+        <span class="remove-icon">×</span>
+      </button>
+      <div (click)="showChart(item)" class="stock-card-content">
+        <div class="card-header">
+          <span class="symbol">{{ item.symbol }}</span>
+          <div class="item-change" [ngClass]="item.change >= 0 ? 'positive' : 'negative'">
+            <span>{{ item.changePercent | number:'1.2-2' }}%</span>
+          </div>
+        </div>
+        <div class="price">{{ item.price | currency:'EUR':'symbol' }}</div>
+        <div class="chart-placeholder" [ngClass]="item.change >= 0 ? 'positive-chart' : 'negative-chart'"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bonds Section -->
+<div *ngIf="bondSymbols.length > 0" class="category-section">
+  <div class="category-section-header">
+    <span class="category-icon">💼</span>
+    <h3>Anleihen</h3>
+    <span class="category-badge">{{ bondSymbols.length }}</span>
+  </div>
+  <div class="market-grid">
+    <div *ngFor="let item of bondPrices$ | async" class="stock-card">
+      <button class="remove-btn" (click)="removeFromWatchlist(item.symbol, $event)" title="Aus Watchlist entfernen">
+        <span class="remove-icon">×</span>
+      </button>
+      <div (click)="showChart(item)" class="stock-card-content">
+        <div class="card-header">
+          <span class="symbol">{{ item.symbol }}</span>
+          <div class="item-change" [ngClass]="item.change >= 0 ? 'positive' : 'negative'">
+            <span>{{ item.changePercent | number:'1.2-2' }}%</span>
+          </div>
+        </div>
+        <div class="price">{{ item.price | currency:'EUR':'symbol' }}</div>
+        <div class="chart-placeholder" [ngClass]="item.change >= 0 ? 'positive-chart' : 'negative-chart'"></div>
+      </div>
+    </div>
   </div>
 </div>
 

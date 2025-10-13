@@ -25,8 +25,12 @@ export class MarketService {
   }
 
   getPricesStream(): Observable<MarketData> {
+    return this.getPricesStreamByCategory('stocks');
+  }
+
+  getPricesStreamByCategory(category: string): Observable<MarketData> {
     return new Observable((observer: Observer<MarketData>) => {
-      const eventSource = new EventSource(`${this.apiUrl}/prices`);
+      const eventSource = new EventSource(`${this.apiUrl}/prices/${category}`);
 
       eventSource.onmessage = (event) => {
         const newPrice = JSON.parse(event.data);

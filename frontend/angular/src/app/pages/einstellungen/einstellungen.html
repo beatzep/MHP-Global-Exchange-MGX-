@@ -7,32 +7,43 @@
     <section class="settings-section">
       <h3 class="section-title">
         <span class="section-icon">👤</span>
-        Profil
+        Profil aktualisieren
       </h3>
       <div class="settings-card">
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Vollständiger Name</label>
-            <p class="setting-value">Max Mustermann</p>
+        <form class="settings-form" (ngSubmit)="updateProfile()">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              [(ngModel)]="name"
+              placeholder="Ihr vollständiger Name"
+              required />
           </div>
-          <button class="setting-action">Bearbeiten</button>
-        </div>
 
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">E-Mail-Adresse</label>
-            <p class="setting-value">max.mustermann@example.com</p>
+          <div class="form-group">
+            <label for="email">E-Mail-Adresse</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="email"
+              placeholder="ihre.email@example.com"
+              required />
           </div>
-          <button class="setting-action">Ändern</button>
-        </div>
 
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Telefonnummer</label>
-            <p class="setting-value">+49 123 456 7890</p>
+          <div *ngIf="profileMessage"
+               [ngClass]="profileMessageType === 'success' ? 'success-message' : 'error-message'">
+            <span class="message-icon">{{ profileMessageType === 'success' ? '✓' : '⚠️' }}</span>
+            {{ profileMessage }}
           </div>
-          <button class="setting-action">Ändern</button>
-        </div>
+
+          <button type="submit" class="settings-btn" [disabled]="isProfileLoading">
+            <span *ngIf="!isProfileLoading">Profil speichern</span>
+            <span *ngIf="isProfileLoading">Wird gespeichert...</span>
+          </button>
+        </form>
       </div>
     </section>
 
@@ -40,171 +51,54 @@
     <section class="settings-section">
       <h3 class="section-title">
         <span class="section-icon">🔒</span>
-        Sicherheit
+        Passwort ändern
       </h3>
       <div class="settings-card">
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Passwort</label>
-            <p class="setting-description">Zuletzt geändert vor 3 Monaten</p>
+        <form class="settings-form" (ngSubmit)="changePassword()">
+          <div class="form-group">
+            <label for="currentPassword">Aktuelles Passwort</label>
+            <input
+              type="password"
+              id="currentPassword"
+              name="currentPassword"
+              [(ngModel)]="currentPassword"
+              placeholder="••••••••"
+              required />
           </div>
-          <button class="setting-action">Ändern</button>
-        </div>
 
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Zwei-Faktor-Authentifizierung</label>
-            <p class="setting-description">Zusätzliche Sicherheitsebene für Ihr Konto</p>
+          <div class="form-group">
+            <label for="newPassword">Neues Passwort</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              [(ngModel)]="newPassword"
+              placeholder="••••••••"
+              required />
           </div>
-          <label class="toggle-switch">
-            <input type="checkbox" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
 
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Biometrische Anmeldung</label>
-            <p class="setting-description">Face ID oder Fingerabdruck</p>
+          <div class="form-group">
+            <label for="confirmNewPassword">Neues Passwort bestätigen</label>
+            <input
+              type="password"
+              id="confirmNewPassword"
+              name="confirmNewPassword"
+              [(ngModel)]="confirmNewPassword"
+              placeholder="••••••••"
+              required />
           </div>
-          <label class="toggle-switch">
-            <input type="checkbox">
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
 
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Aktive Sitzungen</label>
-            <p class="setting-description">3 aktive Geräte</p>
+          <div *ngIf="passwordMessage"
+               [ngClass]="passwordMessageType === 'success' ? 'success-message' : 'error-message'">
+            <span class="message-icon">{{ passwordMessageType === 'success' ? '✓' : '⚠️' }}</span>
+            {{ passwordMessage }}
           </div>
-          <button class="setting-action secondary">Verwalten</button>
-        </div>
-      </div>
-    </section>
 
-    <!-- Notifications Section -->
-    <section class="settings-section">
-      <h3 class="section-title">
-        <span class="section-icon">🔔</span>
-        Benachrichtigungen
-      </h3>
-      <div class="settings-card">
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">E-Mail-Benachrichtigungen</label>
-            <p class="setting-description">Wichtige Updates und Nachrichten</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Push-Benachrichtigungen</label>
-            <p class="setting-description">Benachrichtigungen auf Ihren Geräten</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Preisalarme</label>
-            <p class="setting-description">Benachrichtigungen bei Kursschwankungen</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Handelsmeldungen</label>
-            <p class="setting-description">Bestätigungen für Käufe und Verkäufe</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-      </div>
-    </section>
-
-    <!-- Appearance Section -->
-    <section class="settings-section">
-      <h3 class="section-title">
-        <span class="section-icon">🎨</span>
-        Erscheinungsbild
-      </h3>
-      <div class="settings-card">
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Dark Mode</label>
-            <p class="setting-description">Dunkles Farbschema aktivieren</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Sprache</label>
-            <p class="setting-description">Deutsch</p>
-          </div>
-          <button class="setting-action">Ändern</button>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Währung</label>
-            <p class="setting-description">EUR (€)</p>
-          </div>
-          <button class="setting-action">Ändern</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Privacy Section -->
-    <section class="settings-section">
-      <h3 class="section-title">
-        <span class="section-icon">🛡️</span>
-        Datenschutz
-      </h3>
-      <div class="settings-card">
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Datenfreigabe</label>
-            <p class="setting-description">Analysedaten zur Verbesserung teilen</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox">
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Meine Daten herunterladen</label>
-            <p class="setting-description">Exportieren Sie alle Ihre Daten</p>
-          </div>
-          <button class="setting-action secondary">Download</button>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
-            <label class="setting-label">Konto löschen</label>
-            <p class="setting-description">Ihr Konto dauerhaft entfernen</p>
-          </div>
-          <button class="setting-action danger">Löschen</button>
-        </div>
+          <button type="submit" class="settings-btn" [disabled]="isPasswordLoading">
+            <span *ngIf="!isPasswordLoading">Passwort ändern</span>
+            <span *ngIf="isPasswordLoading">Wird geändert...</span>
+          </button>
+        </form>
       </div>
     </section>
   </div>

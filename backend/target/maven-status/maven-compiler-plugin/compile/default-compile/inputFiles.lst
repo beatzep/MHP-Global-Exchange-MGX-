@@ -1,4 +1,5 @@
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/MhpExchangeApplication.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/config/SecurityConfig.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/config/WebConfig.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/CandleData.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/FinnhubQuote.java
@@ -8,7 +9,12 @@
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/api/TwelveDataValue.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/market/domain/MarketData.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/AuthController.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/ChangePasswordRequest.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/LoginRequest.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/LoginResponse.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/RegisterRequest.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/TokenService.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/UpdateProfileRequest.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/api/WatchlistController.java
 /home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/domain/User.java
+/home/mert/Documents/VSCode/MHP-Global-Exchange-MGX-/backend/src/main/java/com/mhp/exchange/user/domain/UserRepository.java

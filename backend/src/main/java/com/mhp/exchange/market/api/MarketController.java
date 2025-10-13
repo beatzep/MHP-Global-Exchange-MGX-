@@ -36,7 +36,28 @@ public class MarketController {
 
     @GetMapping("/prices")
     public Flux<MarketData> getPrices() {
-        List<String> symbols = List.of("AAPL", "GOOGL", "TSLA", "MSFT", "AMZN", "NVDA");
+        return getPricesByCategory("stocks");
+    }
+
+    @GetMapping("/prices/{category}")
+    public Flux<MarketData> getPricesByCategory(@PathVariable String category) {
+        List<String> symbols;
+
+        switch (category.toLowerCase()) {
+            case "etfs":
+                symbols = List.of("SPY", "QQQ", "VTI", "IWM", "EFA", "VWO", "AGG", "GLD");
+                break;
+            case "bonds":
+                symbols = List.of("TLT", "IEF", "SHY", "LQD", "HYG", "MUB", "TIP", "BND");
+                break;
+            case "stocks":
+            default:
+                symbols = List.of(
+                    "AAPL", "GOOGL", "TSLA", "MSFT", "AMZN",
+                    "NVDA", "META", "NFLX", "AMD", "INTC"
+                );
+        }
+
         return Flux.fromIterable(symbols)
                 // Nicht-blockierende Verzögerung, um das API-Limit nicht zu überschreiten
                 .delayElements(Duration.ofSeconds(2))

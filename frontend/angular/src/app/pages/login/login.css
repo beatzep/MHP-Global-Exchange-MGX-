@@ -154,3 +154,30 @@
   font-size: 0.85rem;
   font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
 }
+
+.link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.login-link-info {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--border-color) !important;
+  text-align: center;
+}
+
+.login-link-info .info-text {
+  text-align: center;
+}
+
+.login-link-info .info-text p {
+  color: var(--text-secondary);
+  margin: 0;
+}
