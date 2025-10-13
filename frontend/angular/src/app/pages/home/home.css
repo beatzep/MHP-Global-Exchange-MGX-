@@ -1,0 +1,11 @@
+/* Home page verwendet die globalen Styles aus app.css */
+
+/* Home-spezifische Überschreibungen */
+h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.7px;
+  color: var(--text-color);
+}

@@ -1,0 +1,61 @@
+<div class="page-container">
+  <div class="markets-header">
+    <div class="header-content">
+      <h2>Märkte</h2>
+      <p class="subtitle">Live-Kursdaten der wichtigsten Aktien</p>
+    </div>
+    <div class="market-stats">
+      <div class="stat-badge">
+        <span class="stat-label">Live</span>
+        <span class="live-indicator"></span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-label">Aktualisiert alle 60s</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="markets-grid" *ngIf="!(marketData$ | async)?.length">
+    <div class="market-card skeleton" *ngFor="let i of [1,2,3,4,5,6]">
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-line"></div>
+    </div>
+  </div>
+
+  <!-- Market Data Grid -->
+  <div class="markets-grid" *ngIf="(marketData$ | async)?.length">
+    <div class="market-card" *ngFor="let data of marketData$ | async">
+      <div class="card-header">
+        <div class="symbol-info">
+          <h3 class="symbol">{{ data.symbol }}</h3>
+          <span class="company-name">{{ getCompanyName(data.symbol) }}</span>
+        </div>
+        <div class="change-badge" [ngClass]="getChangeClass(data.change)">
+          <span class="change-icon">{{ getChangeIcon(data.change) }}</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="price-section">
+          <div class="current-price">{{ data.price | currency:'USD':'symbol':'1.2-2' }}</div>
+          <div class="price-change" [ngClass]="getChangeClass(data.change)">
+            <span class="change-value">{{ data.change >= 0 ? '+' : '' }}{{ data.change | number:'1.2-2' }}</span>
+            <span class="change-percent">({{ data.changePercent | number:'1.2-2' }}%)</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="view-details-btn">Details anzeigen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info-banner">
+    <span class="info-icon">ℹ️</span>
+    <p>Die Kursdaten werden von Finnhub bereitgestellt und alle 60 Sekunden aktualisiert. Für Echtzeit-Trading bitte einloggen.</p>
+  </div>
+</div>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
-  selector: 'app-stock-chart',
+  selector: 'app-stock-chart-home',
   standalone: true,
   imports: [CommonModule, NgxChartsModule],
   template: `

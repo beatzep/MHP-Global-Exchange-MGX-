@@ -36,7 +36,7 @@ public class MarketController {
 
     @GetMapping("/prices")
     public Flux<MarketData> getPrices() {
-        List<String> symbols = List.of("AAPL", "GOOGL", "TSLA", "MSFT", "AMZN", "NVDA", "VOW3.DE");
+        List<String> symbols = List.of("AAPL", "GOOGL", "TSLA", "MSFT", "AMZN", "NVDA");
         return Flux.fromIterable(symbols)
                 // Nicht-blockierende Verzögerung, um das API-Limit nicht zu überschreiten
                 .delayElements(Duration.ofSeconds(2))

@@ -1,0 +1,55 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Willkommen zurück</h2>
+      <p class="subtitle">Melden Sie sich bei Ihrem Konto an</p>
+    </div>
+
+    <form class="login-form" (ngSubmit)="login()">
+      <div class="form-group">
+        <label for="email">E-Mail-Adresse</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="ihre.email@example.com"
+          required
+          autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          required
+          autocomplete="current-password" />
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        <span class="error-icon">⚠️</span>
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="login-btn" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Anmelden</span>
+        <span *ngIf="isLoading">Wird geladen...</span>
+      </button>
+    </form>
+
+    <div class="demo-info">
+      <div class="info-badge">
+        <span class="info-icon">ℹ️</span>
+        <div class="info-text">
+          <strong>Demo-Zugangsdaten:</strong>
+          <p>E-Mail: demo@mhp.com | Passwort: demo123</p>
+          <p>E-Mail: admin@mhp.com | Passwort: admin123</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

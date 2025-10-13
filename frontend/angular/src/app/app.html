@@ -1,63 +1,48 @@
 <div class="app-container">
   <nav class="sidebar">
     <div class="sidebar-header">
-      <!-- Placeholder for a logo -->
-      <div class="logo">M</div>
+      <img src="./assets/TransparentNeu.png" alt="Logo" class="logo logo-img">
     </div>
     <ul class="nav-list">
-      <li class="nav-item active"><span>Portfolio</span></li>
-      <li class="nav-item"><span>Märkte</span></li>
-      <li class="nav-item"><span>News</span></li>
+      <li class="nav-item">
+        <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><span>Portfolio</span></a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/markets" routerLinkActive="active"><span>Märkte</span></a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/news" routerLinkActive="active"><span>News</span></a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/einstellungen" routerLinkActive="active"><span>Einstellungen</span></a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/hilfe" routerLinkActive="active"><span>Hilfe</span></a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/ueberuns" routerLinkActive="active"><span>Über uns</span></a>
+      </li>
     </ul>
+
+    <div class="sidebar-footer">
+      <a routerLink="/login" class="login-link">
+        <span class="login-icon">🔐</span>
+        <span>Anmelden</span>
+      </a>
+    </div>
   </nav>
 
   <div class="main-content">
     <header class="header">
       <h1>{{ title }}</h1>
       <div class="search-bar">
-        <input type="text" placeholder="Suchen...">
+        <input type="text" placeholder="Suchen..." />
       </div>
     </header>
 
+    <!-- Hier wird der Seiteninhalt dynamisch geladen -->
     <main class="content">
-      <h2>Watchlist</h2>
-      <div class="market-grid">
-        <!-- Skeleton Loader -->
-        <ng-container *ngIf="!(prices$ | async)?.length">
-          <div class="stock-card skeleton" *ngFor="let i of [1,2,3,4,5,6]"></div>
-        </ng-container>
-
-        <!-- Actual Data -->
-        <div *ngFor="let item of prices$ | async" class="stock-card" (click)="showChart(item)">
-          <div class="card-header">
-            <span class="symbol">{{ item.symbol }}</span>
-            <div class="item-change" [ngClass]="item.change >= 0 ? 'positive' : 'negative'">
-              <span>{{ item.changePercent | number:'1.2-2' }}%</span>
-            </div>
-          </div>
-          <div class="price">{{ item.price | currency:'EUR':'symbol' }}</div>
-          <div class="chart-placeholder" [ngClass]="item.change >= 0 ? 'positive-chart' : 'negative-chart'"></div>
-        </div>
-      </div>
       <router-outlet></router-outlet>
     </main>
-  </div>
-</div>
-
-<!-- Chart Modal -->
-<div *ngIf="selectedStock" class="modal-overlay" (click)="closeChart()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h2>{{ selectedStock.symbol }}</h2>
-      <button class="close-button" (click)="closeChart()">×</button>
-    </div>
-    <div class="modal-body">
-      <ng-container *ngIf="chartData.length > 0; else chartLoading">
-        <app-stock-chart [chartData]="chartData" [colorScheme]="chartColorScheme"></app-stock-chart>
-      </ng-container>
-      <ng-template #chartLoading>
-        <p>Lade Chart-Daten...</p>
-      </ng-template>
-    </div>
   </div>
 </div>

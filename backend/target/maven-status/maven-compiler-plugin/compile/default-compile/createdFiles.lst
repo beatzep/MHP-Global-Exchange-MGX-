@@ -1,0 +1,4 @@
+com/mhp/exchange/user/api/AuthController.class
+com/mhp/exchange/user/api/LoginResponse.class
+com/mhp/exchange/user/api/RegisterRequest.class
+com/mhp/exchange/user/api/LoginRequest.class
