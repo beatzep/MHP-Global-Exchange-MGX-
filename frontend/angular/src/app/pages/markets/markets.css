@@ -4,27 +4,30 @@
   margin: 0 auto;
 }
 
-.markets-header {
+.page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 2.5rem;
   flex-wrap: wrap;
   gap: 1.5rem;
+  text-align: left;
 }
 
-.header-content h2 {
+.page-header .header-content h2 {
   margin: 0 0 0.5rem 0;
   font-size: 2.5rem;
   font-weight: 700;
   letter-spacing: -1px;
   color: var(--text-color);
+  text-align: left;
 }
 
-.subtitle {
+.page-header .subtitle {
   color: var(--text-secondary);
   font-size: 1.1rem;
   margin: 0;
+  text-align: left;
 }
 
 .market-stats {

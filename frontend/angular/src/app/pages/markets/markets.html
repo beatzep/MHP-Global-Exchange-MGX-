@@ -71,7 +71,7 @@
 
       <div class="card-body">
         <div class="price-section">
-          <div class="current-price">{{ data.price | currency:'USD':'symbol':'1.2-2' }}</div>
+          <div class="current-price">{{ data.price | currency:'EUR':'symbol':'1.2-2' }}</div>
           <div class="price-change" [ngClass]="getChangeClass(data.change)">
             <span class="change-value">{{ data.change >= 0 ? '+' : '' }}{{ data.change | number:'1.2-2' }}</span>
             <span class="change-percent">({{ data.changePercent | number:'1.2-2' }}%)</span>
@@ -137,7 +137,7 @@
         <div class="buy-form">
           <div class="form-row">
             <label>Aktueller Preis</label>
-            <div class="price-display">{{ selectedAssetForBuy?.price | currency:'USD':'symbol':'1.2-2' }}</div>
+            <div class="price-display">{{ selectedAssetForBuy?.price | currency:'EUR':'symbol':'1.2-2' }}</div>
           </div>
 
           <div class="form-row">
@@ -154,7 +154,7 @@
           <div class="cost-breakdown">
             <div class="cost-row">
               <span>Wertpapiere</span>
-              <span>{{ (selectedAssetForBuy?.price || 0) * buyQuantity | currency:'USD':'symbol':'1.2-2' }}</span>
+              <span>{{ (selectedAssetForBuy?.price || 0) * buyQuantity | currency:'EUR':'symbol':'1.2-2' }}</span>
             </div>
             <div class="cost-row">
               <span>Gebühren</span>

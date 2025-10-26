@@ -9,11 +9,17 @@ com/mhp/exchange/MhpExchangeApplication.class
 com/mhp/exchange/user/api/ChangePasswordRequest.class
 com/mhp/exchange/market/domain/MarketData.class
 com/mhp/exchange/user/api/LoginRequest.class
+com/mhp/exchange/portfolio/domain/Position.class
 com/mhp/exchange/market/api/TwelveDataTimeSeriesResponse.class
 com/mhp/exchange/config/WebConfig.class
 com/mhp/exchange/market/api/FinnhubQuote.class
 com/mhp/exchange/market/api/MarketController.class
+com/mhp/exchange/user/api/WatchlistController.class
+com/mhp/exchange/trading/api/BuyRequest.class
 com/mhp/exchange/user/api/LoginResponse.class
 com/mhp/exchange/user/api/RegisterRequest.class
+com/mhp/exchange/portfolio/domain/PositionRepository.class
+com/mhp/exchange/trading/api/TradingController.class
+com/mhp/exchange/user/api/TokenService.class
 com/mhp/exchange/config/WebConfig$1.class
 com/mhp/exchange/market/api/MarketData.class

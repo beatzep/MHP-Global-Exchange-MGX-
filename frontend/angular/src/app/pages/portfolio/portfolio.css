@@ -1,24 +1,28 @@
-.portfolio-container {
+.page-container {
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
 }
 
-.portfolio-header {
+.page-header {
   margin-bottom: 2rem;
+  text-align: left;
 }
 
-.portfolio-header h2 {
-  font-size: 2rem;
-  font-weight: 600;
+.page-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #2c3e50;
   margin: 0 0 0.5rem 0;
+  letter-spacing: -1px;
+  text-align: left;
 }
 
-.subtitle {
-  font-size: 1rem;
+.page-header .subtitle {
+  font-size: 1.1rem;
   color: #7f8c8d;
   margin: 0;
+  text-align: left;
 }
 
 /* Loading State */

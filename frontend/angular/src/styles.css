@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* === ngx-charts theme customization === */
+/* Dark theme (default) */
+:root,
+:root[data-theme="dark"] {
+  --ngx-chart-text-color: #f5f5f7;
+  --ngx-chart-grid-color: rgba(255, 255, 255, 0.1);
+  --ngx-chart-tooltip-bg: #1d1d1f;
+  --ngx-chart-tooltip-text: #f5f5f7;
+}
+
+/* Light theme */
+:root[data-theme="light"] {
+  --ngx-chart-text-color: #1d1d1f;
+  --ngx-chart-grid-color: rgba(0, 0, 0, 0.1);
+  --ngx-chart-tooltip-bg: #ffffff;
+  --ngx-chart-tooltip-text: #1d1d1f;
+}
+
+/* Apply theme to ngx-charts */
+ngx-charts-line-chart text,
+.ngx-charts text {
+  fill: var(--ngx-chart-text-color) !important;
+}
+
+.ngx-charts .gridline-path {
+  stroke: var(--ngx-chart-grid-color) !important;
+}
+
+.ngx-charts .tick line {
+  stroke: var(--ngx-chart-grid-color) !important;
+}
+
+.ngx-charts-tooltip-content {
+  background: var(--ngx-chart-tooltip-bg) !important;
+  color: var(--ngx-chart-tooltip-text) !important;
+  border: 1px solid var(--border-color) !important;
+}

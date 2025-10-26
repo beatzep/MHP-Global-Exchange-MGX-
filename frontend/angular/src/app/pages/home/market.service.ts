@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, Observer } from 'rxjs';
 import { MarketData } from './market-data.model';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
+import { ThemeService } from '../../services/theme.service';
 
 export interface ChartData {
   chartData: any[];
@@ -18,7 +19,22 @@ export class MarketService {
 
   private apiUrl = 'http://localhost:8080/api/market';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private themeService: ThemeService) { }
+
+  private getChartColors(): { positive: string, negative: string } {
+    const theme = this.themeService.getCurrentTheme();
+    if (theme === 'light') {
+      return {
+        positive: '#389e0d',  // Darker green for light mode
+        negative: '#cf1322'   // Darker red for light mode
+      };
+    } else {
+      return {
+        positive: '#52c41a',  // Bright green for dark mode
+        negative: '#ff4d4f'   // Bright red for dark mode
+      };
+    }
+  }
 
   getMarketMessage(): Observable<string> {
     return this.http.get(`${this.apiUrl}`, { responseType: 'text' });
@@ -64,9 +80,10 @@ export class MarketService {
 
         const firstPrice = series.length > 0 ? series[0].value : 0;
         const lastPrice = series.length > 0 ? series[series.length - 1].value : 0;
+        const colors = this.getChartColors();
         const colorScheme = {
           ...DEFAULT_CHART_COLOR_SCHEME,
-          domain: [lastPrice >= firstPrice ? '#26a69a' : '#ef5350']
+          domain: [lastPrice >= firstPrice ? colors.positive : colors.negative]
         };
         const chartData = [{ name: stock.symbol, series }];
 
