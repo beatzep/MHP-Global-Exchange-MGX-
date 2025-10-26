@@ -21,12 +21,28 @@ import java.util.List;
 public class MarketController {
     @Value("${finnhub.api.key}")
     private String finnhubApiKey;
+    @Value("${finnhub.api.key2:}")
+    private String finnhubApiKey2;
     @Value("${twelvedata.api.key}")
     private String twelveDataApiKey;
     private final WebClient webClient;
+    private int requestCounter = 0;
 
     public MarketController(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("https://finnhub.io/api/v1").build();
+    }
+
+    /**
+     * Load balancing zwischen zwei API Keys
+     */
+    private synchronized String getNextApiKey() {
+        // Wenn kein zweiter Key vorhanden ist, immer den ersten nutzen
+        if (finnhubApiKey2 == null || finnhubApiKey2.isEmpty()) {
+            return finnhubApiKey;
+        }
+        // Alternierend zwischen beiden Keys wechseln
+        requestCounter++;
+        return (requestCounter % 2 == 0) ? finnhubApiKey : finnhubApiKey2;
     }
 
     @GetMapping
@@ -58,17 +74,19 @@ public class MarketController {
                 );
         }
 
+        // Mit 2 API Keys: Optimiert für schnelles Laden ohne Rate Limit
+        // 450ms Verzögerung + 2 parallel = ~2.2 Requests/Sekunde (1.1 pro Key)
         return Flux.fromIterable(symbols)
-                // Nicht-blockierende Verzögerung, um das API-Limit nicht zu überschreiten
-                .delayElements(Duration.ofSeconds(2))
-                .flatMap(this::fetchStockData);
+                .delayElements(Duration.ofMillis(450))  // 450ms zwischen Requests
+                .flatMap(this::fetchStockData, 2);      // max 2 parallel
     }
 
     private Mono<MarketData> fetchStockData(String symbol) {
+        String apiKey = getNextApiKey();
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/quote")
                         .queryParam("symbol", symbol)
-                        .queryParam("token", finnhubApiKey)
+                        .queryParam("token", apiKey)
                         .build())
                 .retrieve()
                 .bodyToMono(FinnhubQuote.class)
