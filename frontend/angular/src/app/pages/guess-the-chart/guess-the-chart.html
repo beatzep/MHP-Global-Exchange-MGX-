@@ -1,0 +1,159 @@
+<div class="guess-the-chart-container">
+  <div class="header-section">
+    <h2>Guess the Chart</h2>
+    <button class="leaderboard-toggle" (click)="toggleLeaderboard()">
+      {{ showLeaderboard ? '🎮 Spiel' : '🏆 Leaderboard' }}
+    </button>
+  </div>
+
+  <!-- Auth Warning -->
+  <div *ngIf="!isAuthenticated && !showLeaderboard" class="auth-warning">
+    ⚠️ Du bist nicht eingeloggt. Dein Score wird nicht gespeichert. <a routerLink="/login">Jetzt einloggen</a>
+  </div>
+
+  <!-- Leaderboard View -->
+  <div *ngIf="showLeaderboard" class="leaderboard-view">
+    <h3>🏆 Top 10 Spieler</h3>
+    <div *ngIf="leaderboard.length === 0" class="empty-leaderboard">
+      Noch keine Scores vorhanden. Sei der Erste!
+    </div>
+    <table *ngIf="leaderboard.length > 0" class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rang</th>
+          <th>Spieler</th>
+          <th>Score</th>
+          <th>Zeit</th>
+          <th>Datum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of leaderboard" [class.highlight]="entry.userName === currentUser?.name">
+          <td class="rank">
+            <span class="rank-badge" [class.gold]="entry.rank === 1" [class.silver]="entry.rank === 2" [class.bronze]="entry.rank === 3">
+              {{ entry.rank }}
+            </span>
+          </td>
+          <td class="player-name">{{ entry.userName }}</td>
+          <td class="score">{{ entry.score }}/{{ entry.totalRounds }}</td>
+          <td class="time">{{ formatTime(entry.timeTaken) }}</td>
+          <td class="date">{{ getRelativeTime(entry.playedAt) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Lade Spiel...</p>
+  </div>
+
+  <!-- Game Playing State -->
+  <div *ngIf="!isLoading && gameState !== 'finished' && !showLeaderboard" class="game-area">
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+      <div class="progress-header">
+        <div class="progress-text">Runde {{ currentRound + 1 }} / {{ totalRounds }}</div>
+        <div class="timer">⏱️ {{ formatTime(elapsedTime) }}</div>
+      </div>
+      <div class="progress-track">
+        <div
+          class="progress-fill"
+          [style.width.%]="((currentRound + 1) / totalRounds) * 100">
+        </div>
+      </div>
+      <div class="score">Punkte: {{ score }}</div>
+    </div>
+
+    <!-- Chart Display -->
+    <div class="chart-container" *ngIf="currentGameRound">
+      <div class="chart-wrapper">
+        <ngx-charts-line-chart
+          [results]="currentGameRound.chartData"
+          [scheme]="currentGameRound.colorScheme"
+          [legend]="false"
+          [xAxis]="true"
+          [yAxis]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          xAxisLabel="Zeit"
+          yAxisLabel="Preis (EUR)"
+          [autoScale]="true">
+        </ngx-charts-line-chart>
+      </div>
+    </div>
+
+    <!-- Question -->
+    <div class="question-section">
+      <div class="question-header">
+        <h3>Welche Aktie ist das?</h3>
+        <button
+          class="joker-button"
+          [class.used]="jokerUsed"
+          [disabled]="!jokerAvailable || gameState !== 'playing'"
+          (click)="useJoker()"
+          title="{{ jokerUsed ? 'Joker bereits verwendet' : '50:50 Joker - Entfernt 2 falsche Antworten' }}">
+          <span class="joker-icon">🃏</span>
+          <span class="joker-text">{{ jokerUsed ? 'Verwendet' : '50:50' }}</span>
+        </button>
+      </div>
+
+      <!-- Answer Options -->
+      <div class="options-grid">
+        <button
+          *ngFor="let option of currentGameRound?.options"
+          class="option-button"
+          [class]="getButtonClass(option)"
+          [disabled]="gameState !== 'playing' || isOptionEliminated(option)"
+          (click)="selectAnswer(option)">
+          {{ isOptionEliminated(option) ? '✗' : option }}
+        </button>
+      </div>
+
+      <!-- Feedback Message -->
+      <div *ngIf="gameState === 'correct'" class="feedback correct-feedback">
+        <div class="feedback-icon">✓</div>
+        <p>Richtig! Das ist {{ currentGameRound?.correctAnswer }}!</p>
+        <button class="next-button" (click)="nextRound()">
+          {{ currentRound + 1 < totalRounds ? 'Nächste Runde' : 'Ergebnis anzeigen' }}
+        </button>
+      </div>
+
+      <div *ngIf="gameState === 'wrong'" class="feedback wrong-feedback">
+        <div class="feedback-icon">✗</div>
+        <p>Falsch! Die richtige Antwort ist {{ currentGameRound?.correctAnswer }}.</p>
+        <button class="next-button" (click)="nextRound()">
+          {{ currentRound + 1 < totalRounds ? 'Nächste Runde' : 'Ergebnis anzeigen' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Finished State -->
+  <div *ngIf="gameState === 'finished' && !showLeaderboard" class="results-container">
+    <h3>Spiel beendet!</h3>
+    <div class="final-score">
+      <div class="score-circle">
+        <div class="score-number">{{ score }}/{{ totalRounds }}</div>
+      </div>
+      <p class="time-display">Zeit: {{ formatTime(elapsedTime) }}</p>
+      <p class="score-message">
+        <span *ngIf="score === totalRounds">Perfekt! Alle richtig! 🎉</span>
+        <span *ngIf="score >= totalRounds * 0.75 && score < totalRounds">Großartig! 🌟</span>
+        <span *ngIf="score >= totalRounds * 0.5 && score < totalRounds * 0.75">Gut gemacht! 👍</span>
+        <span *ngIf="score < totalRounds * 0.5">Versuch's nochmal! 💪</span>
+      </p>
+      <div *ngIf="isAuthenticated && scoreSaved" class="score-saved-message">
+        ✓ Score gespeichert!
+      </div>
+      <div *ngIf="!isAuthenticated" class="not-logged-in-message">
+        Melde dich an, um deinen Score zu speichern! <a routerLink="/login">Jetzt einloggen</a>
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button class="restart-button" (click)="startNewGame()">Neues Spiel starten</button>
+      <button class="leaderboard-button" (click)="toggleLeaderboard()">🏆 Leaderboard ansehen</button>
+    </div>
+  </div>
+</div>

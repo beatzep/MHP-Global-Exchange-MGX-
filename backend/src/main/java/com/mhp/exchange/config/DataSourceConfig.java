@@ -85,15 +85,18 @@ public class DataSourceConfig {
         em.setJpaVendorAdapter(vendorAdapter);
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "update");
         properties.put("hibernate.show_sql", true);
         properties.put("hibernate.format_sql", true);
 
-        // Set dialect based on database type
+        // Set dialect and ddl-auto based on database type
         if (isUsingH2) {
             properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+            properties.put("hibernate.hbm2ddl.auto", "create-drop"); // H2: Test-DB, wird bei jedem Start zurückgesetzt
+            logger.info("H2 Database Mode: create-drop (Test-Datenbank wird bei Neustart zurückgesetzt)");
         } else {
             properties.put("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect");
+            properties.put("hibernate.hbm2ddl.auto", "update"); // MariaDB: Persistente DB, behält Daten
+            logger.info("MariaDB Mode: update (Daten bleiben erhalten)");
         }
 
         em.setJpaPropertyMap(properties);
