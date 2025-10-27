@@ -1,32 +1,18 @@
-# Claude Code
-.claude/
-
-# Java / Maven
+# Java / Maven build output
 backend/target/
 *.class
 *.jar
-*.war
-*.ear
-*.log
 
-# Node / Angular
+# Node / Angular build output
 frontend/angular/node_modules/
-frontend/angular/dist/
-frontend/angular/.angular/
+dist/
 
-# IDE
-.idea/
+# IDE / Editor files
 .vscode/
-*.iml
+.idea/
 
-# OS
+# Betriebssystem-spezifisch
 .DS_Store
 Thumbs.db
 
-# Local JDK/Maven installations
-openJdk-*/
-apache-maven-*/
-
-# Environment files
-.env
-*.env.local
+.vscode/
