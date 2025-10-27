@@ -1,8 +1,4 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Project Overview
+# Project Overview
 
 MHP Global Exchange (MGX) is a full-stack stock market application with a Spring Boot backend and Angular frontend. The application provides real-time stock price data and historical chart visualization.
 

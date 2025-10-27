@@ -14,7 +14,7 @@ import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  title = 'MHP-Global-Exchange-MGX-';
+  title = 'MHP-Global-Exchange-MGX';
   currentUser$;
 
   constructor(public authService: AuthService) {
