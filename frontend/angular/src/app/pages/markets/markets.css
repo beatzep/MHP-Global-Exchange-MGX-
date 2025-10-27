@@ -14,16 +14,6 @@
   text-align: left;
 }
 
-.markets-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2.5rem;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  text-align: left;
-}
-
 .page-header .header-content h2 {
   margin: 0 0 0.5rem 0;
   font-size: 2.5rem;

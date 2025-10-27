@@ -8,13 +8,11 @@ import { HilfeComponent } from './pages/hilfe/hilfe';
 import { EinstellungenComponent } from './pages/einstellungen/einstellungen';
 import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
-import { GuessTheChartComponent } from './pages/guess-the-chart/guess-the-chart';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: Portfolio, canActivate: [authGuard] },
   { path: 'watchlist', component: HomeComponent, canActivate: [authGuard] },
-  { path: 'guess-the-chart', component: GuessTheChartComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'markets', component: MarketsComponent },
