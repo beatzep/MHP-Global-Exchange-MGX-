@@ -1,12 +1,14 @@
 package com.mhp.exchange.config;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -15,11 +17,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 public class DataSourceConfig {
@@ -28,7 +27,7 @@ public class DataSourceConfig {
 
     private boolean isUsingH2 = false;
 
-    @Value("${spring.datasource.url:jdbc:mariadb://192.168.0.192:3306/mhp_exchange}")
+    @Value("${spring.datasource.url:jdbc:mariadb://192.168.0.192:3306/meine_datenbank}")
     private String mariadbUrl;
 
     @Value("${spring.datasource.username:mgx_app}")
@@ -66,7 +65,7 @@ public class DataSourceConfig {
         logger.info("Starting with H2 in-memory database (Development Mode)");
         isUsingH2 = true;
         HikariConfig h2Config = new HikariConfig();
-        h2Config.setJdbcUrl("jdbc:h2:mem:mhp_exchange;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+        h2Config.setJdbcUrl("jdbc:h2:mem:meine_datenbank;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
         h2Config.setUsername("sa");
         h2Config.setPassword("");
         h2Config.setDriverClassName("org.h2.Driver");

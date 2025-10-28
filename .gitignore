@@ -30,3 +30,5 @@ apache-maven-*/
 # Environment files
 .env
 *.env.local
+
+/target
